@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>SUSlim</title>
+    <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container-fluid" id="main">
+    <div class="row align-items-center" id="title-row">
+        <div class="col-3">
+        </div>
+        <div class="col-6 align-self-center text-center">
+            <div class="box">
+                <h1>SUSlim</h1>
+                <br/>
+            </div>
+        </div>
+        <div class="col-3">
+        </div>
+    </div>
+    <div class="row align-items-center" id="main-row">
+        <div class="col-3">
+            <div style="transform: translateY(7px);">
+                <label for="mb-control" class="form-label small">选择要压缩到几 MB 以下：</label>
+                <div class="input-group mb-3">
+                    <input type="number" class="form-control" id="mb-control" placeholder="请输入一个数">
+                    <span class="input-group-text">MB</span>
+                </div>
+                <br/>
+            </div>
+        </div>
+        <div class="col-6 align-self-center text-center">
+            <div class="box">
+                <label for="select-file" class="form-label small">选择一个文件或目录：</label><br/>
+                <button id="select-file" type="button" class="btn btn-outline-secondary" style="width: 144px">选择
+                </button>
+                <br/>
+                <strong id="filePath" class="small pt-1">&nbsp;</strong>
+            </div>
+            <script>
+                const selectBtn = document.getElementById('select-file');
+                const filePathElement = document.getElementById('filePath');
+
+                selectBtn.addEventListener('click', async () => {
+                    filePathElement.innerText = await window.electronAPI.openFile();
+                });
+            </script>
+        </div>
+        <div class="col-3">
+            <label for="submit" class="form-label small">然后提交即可：</label>
+            <button id="submit" type="button" class="btn btn-outline-primary" style="width: 144px">提交
+            </button>
+            <br/>
+            <br/>
+            <script>
+                const submitBtn = document.getElementById('submit');
+
+                submitBtn.addEventListener('click', async () => {
+                    alert(await window.electronAPI.traverse(filePathElement.innerText));
+                });
+            </script>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -303,3 +303,4 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,webstorm+all,vue,node,windows
+.DS_Store
