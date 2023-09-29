@@ -1,6 +1,6 @@
-# SUSlim
+# ShuLIM
 
-A new image slim kit inspired by the needs of some SUSTech societies, which resulted the name `SUSlim`.
+A new image slim kit inspired by the needs of some SUSTech societies, which resulted the name `ShuLIM`.
 
 **Features:**
 

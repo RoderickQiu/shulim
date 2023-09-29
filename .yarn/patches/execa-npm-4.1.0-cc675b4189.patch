@@ -1,0 +1,22 @@
+diff --git a/index.js b/index.js
+index d94125310c696f2f56dd4439d2200f4e29951aea..61721d359df2e437bac45a46629ed4fd55be7ef8 100644
+--- a/index.js
++++ b/index.js
+@@ -77,7 +77,7 @@ const execa = (file, args, options) => {
+ 
+ 	let spawned;
+ 	try {
+-		spawned = childProcess.spawn(parsed.file, parsed.args, parsed.options);
++		spawned = childProcess.execFile(parsed.file, parsed.args, parsed.options);
+ 	} catch (error) {
+ 		// Ensure the returned error is always both a promise and a child process
+ 		const dummySpawned = new childProcess.ChildProcess();
+@@ -166,7 +166,7 @@ module.exports.sync = (file, args, options) => {
+ 
+ 	let result;
+ 	try {
+-		result = childProcess.spawnSync(parsed.file, parsed.args, parsed.options);
++		result = childProcess.execFileSync(parsed.file, parsed.args, parsed.options);
+ 	} catch (error) {
+ 		throw makeError({
+ 			error,

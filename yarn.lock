@@ -1454,6 +1454,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"electron-log@npm:^4.4.8":
+  version: 4.4.8
+  resolution: "electron-log@npm:4.4.8"
+  checksum: 5a7958f8fd9a5c95987e885ffe1c5b88be15bb41d348b65c92e2d8664519faddf17ce0208cd4e7027b0908f92fecedfbef246a45061f53e4a53b5d2201aafbd9
+  languageName: node
+  linkType: hard
+
 "electron-publish@npm:24.5.0":
   version: 24.5.0
   resolution: "electron-publish@npm:24.5.0"
@@ -3873,6 +3880,21 @@ electron@latest:
   languageName: node
   linkType: hard
 
+"shulim@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "shulim@workspace:."
+  dependencies:
+    bootstrap: 5.3.2
+    electromon: 1.0.10
+    electron: 26.2.3
+    electron-builder: ^24.6.4
+    electron-log: ^4.4.8
+    imagemin: ^7.0.1
+    imagemin-mozjpeg: ^9.0.0
+    imagemin-pngquant: ^9.0.2
+  languageName: unknown
+  linkType: soft
+
 "signal-exit@npm:^3.0.0, signal-exit@npm:^3.0.2, signal-exit@npm:^3.0.7":
   version: 3.0.7
   resolution: "signal-exit@npm:3.0.7"
@@ -4123,20 +4145,6 @@ electron@latest:
   checksum: 3dda818de06ebbe5b9653e07842d9479f3555ebc77e9a0280caf5a14fb877ffee9ed57007c3b78f5a6324b8dbeec648d9e97a24e2ed9fdb81ddc69ea07100f4a
   languageName: node
   linkType: hard
-
-"suslim@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "suslim@workspace:."
-  dependencies:
-    bootstrap: 5.3.2
-    electromon: 1.0.10
-    electron: 26.2.3
-    electron-builder: ^24.6.4
-    imagemin: ^7.0.1
-    imagemin-mozjpeg: ^9.0.0
-    imagemin-pngquant: ^9.0.2
-  languageName: unknown
-  linkType: soft
 
 "tar-stream@npm:^1.5.2":
   version: 1.6.2

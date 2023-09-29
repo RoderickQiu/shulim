@@ -4,6 +4,7 @@ const fs = require("fs");
 const imagemin = require('imagemin');
 const imageminPngquant = require('imagemin-pngquant');
 const imageminMozJpeg = require('imagemin-mozjpeg');
+const log = require('electron-log');
 
 async function handleFileOpen() {
     const {canceled, filePaths} = await dialog.showOpenDialog({
@@ -34,7 +35,7 @@ function traverseDirectory(directory) {
                 // 检查文件扩展名是否为jpg、jpeg或png
                 const ext = path.extname(filePath).toLowerCase();
                 if (ext === '.jpg' || ext === '.jpeg' || ext === '.png') {
-                    console.log(filePath); // 在这里可以处理文件路径
+                    print(filePath); // 在这里可以处理文件路径
                     dirs.push(filePath);
                 }
             } else if (fileStat.isDirectory()) {
@@ -52,6 +53,7 @@ async function compress(filePath, maxSize) {
     try {
         let curBuffer, cnt = 0;
         const oriBuffer = await fs.promises.readFile(filePath);
+        print("Ori-Buffer " + oriBuffer.byteLength);
         curBuffer = await oriBuffer;
         while (curBuffer.byteLength > maxSize * 1024 * 1024) {
             curBuffer = await imagemin.buffer(oriBuffer, {
@@ -63,15 +65,12 @@ async function compress(filePath, maxSize) {
                         quality: [0.64 - cnt * 0.05, 0.84 - cnt * 0.05]
                     })
                 ]
-            }).catch((error) => {
-                console.error('Error compressing images:', error);
-            });
+            })
             cnt++;
         }
-
         return curBuffer;
     } catch (error) {
-        console.error('Error compressing images:', error);
+        err('Error compressing images outside:', error);
         return null;
     }
 }
@@ -104,6 +103,15 @@ function getTimeMark() {
 }
 
 app.whenReady().then(() => {
+    // 调整 V8 堆的最大大小为 4GB
+    app.commandLine.appendSwitch('js-flags', '--max-old-space-size=4096');
+
+    // 调整 Node.js 堆的最大大小为 4GB
+    app.commandLine.appendSwitch('max-old-space-size', '4096');
+
+    // 调整 HTTP 请求头的最大大小为 16KB
+    app.commandLine.appendSwitch('max-http-header-size', '16384');
+
     createWindow();
 
     app.on('activate', () => {
@@ -113,9 +121,9 @@ app.whenReady().then(() => {
     ipcMain.handle('dialog:openFile', handleFileOpen);
     ipcMain.handle('fs:traverse', async (event, args) => {
         let lowered = args.dir.toLowerCase();
+        let timestamp = getTimeMark();
         if (lowered.indexOf(".jpg") === -1 && lowered.indexOf(".jpeg") === -1 && lowered.indexOf(".png") === -1) {
             let arr = traverseDirectory(args.dir);
-            let timestamp = getTimeMark();
             if (mainWindow != null)
                 mainWindow.webContents.send("upd:updateProgress", {cur: 0, all: arr.length});
             for (let i = 0; i < arr.length; i++) {
@@ -127,7 +135,7 @@ app.whenReady().then(() => {
                     }
                     fs.writeFile(arr[i].replace(args.dir, args.dir + "-" + timestamp), compressed, (error) => {
                         if (error) {
-                            console.error('Error exporting buffer to file:', error);
+                            err('Error exporting buffer to file:', error);
                         }
                     });
                 }
@@ -138,7 +146,23 @@ app.whenReady().then(() => {
         } else {
             let compressed = await compress(args.dir, args.maxSize);
             if (compressed == null) return null;
-            else return compressed;
+            else {
+                const directory = path.dirname(args.dir);
+                const extName = path.extname(args.dir);
+                const fileName = path.basename(args.dir).replace(extName, "");
+                if (!fs.existsSync(directory)) {
+                    fs.mkdirSync(directory, {recursive: true});
+                }
+                fs.writeFile(directory + '/' + fileName + '-' + timestamp + extName,
+                    compressed, (error) => {
+                        if (error) {
+                            err('Error exporting buffer to file:', error);
+                        }
+                    });
+                if (mainWindow != null)
+                    mainWindow.webContents.send("upd:updateProgress", {cur: 1, all: 1});
+                return directory + '/' + fileName + '-' + timestamp + extName;
+            }
         }
     })
 })
@@ -146,3 +170,13 @@ app.whenReady().then(() => {
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit()
 })
+
+function print(obj) {
+    console.log(obj);
+    log.log(obj);
+}
+
+function err(obj) {
+    console.error(obj);
+    log.error(obj);
+}
