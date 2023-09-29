@@ -9,7 +9,7 @@
     "win": "node src/builder/win.js"
   },
   "author": "RoderickQiu",
-  "license": "MPL-2.0",
+  "license": "GPL-3.0",
   "homepage": "https://r-q.name",
   "appId": "com.scrisstudio.shulim",
   "build": {
@@ -19,13 +19,13 @@
   "productName": "ShuLIM",
   "dependencies": {
     "bootstrap": "5.3.2",
-    "electromon": "1.0.10",
     "electron-log": "^4.4.8",
     "imagemin": "^7.0.1",
     "imagemin-mozjpeg": "^9.0.0",
     "imagemin-pngquant": "^9.0.2"
   },
   "devDependencies": {
+    "electromon": "1.0.10",
     "electron": "26.2.3",
     "electron-builder": "^24.6.4"
   },

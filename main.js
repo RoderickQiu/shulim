@@ -88,7 +88,8 @@ const createWindow = () => {
         }
     });
 
-    mainWindow.setWindowButtonVisibility(true);
+    if (process.platform === "darwin")
+        mainWindow.setWindowButtonVisibility(true);
 
     mainWindow.loadFile('index.html');
 
@@ -103,15 +104,6 @@ function getTimeMark() {
 }
 
 app.whenReady().then(() => {
-    // 调整 V8 堆的最大大小为 4GB
-    app.commandLine.appendSwitch('js-flags', '--max-old-space-size=4096');
-
-    // 调整 Node.js 堆的最大大小为 4GB
-    app.commandLine.appendSwitch('max-old-space-size', '4096');
-
-    // 调整 HTTP 请求头的最大大小为 16KB
-    app.commandLine.appendSwitch('max-http-header-size', '16384');
-
     createWindow();
 
     app.on('activate', () => {
@@ -172,11 +164,9 @@ app.on('window-all-closed', () => {
 })
 
 function print(obj) {
-    console.log(obj);
     log.log(obj);
 }
 
 function err(obj) {
-    console.error(obj);
     log.error(obj);
 }

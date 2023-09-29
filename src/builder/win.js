@@ -17,7 +17,7 @@ const config = {
         ],
         "target": [
             {
-                "target": "dir",
+                "target": "zip",
                 "arch": ["x64"]
             }
         ],

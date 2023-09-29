@@ -1,6 +1,7 @@
 # ShuLIM
 
-A new image slim kit inspired by the needs of some SUSTech societies, which resulted the name `ShuLIM`.
+A new image slim kit inspired by the needs of some SUSTech societies, esp. the Shuli College's New Media Agency, which
+resulted the name `ShuLIM`.
 
 **Features:**
 

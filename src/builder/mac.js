@@ -16,13 +16,14 @@ const config = {
             "./node_modules/pngquant-bin/**"
         ],
         "target": {
-            "arch": ['arm64'],
-            "target": 'dir'
+            "arch": ['arm64', 'x64'],
+            "target": 'dmg'
         },
         "icon": "src/icons/icon.icns",
         "darkModeSupport": true,
         "files": [
-            "**/*"
+            "**/*",
+            "!./node_modules/electromon/**"
         ]
     },
     "publish": null
